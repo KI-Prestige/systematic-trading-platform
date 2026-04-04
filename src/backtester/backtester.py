@@ -81,7 +81,6 @@ class SimpleBacktester:
             "max_drawdown_pct": max_dd * 100
         }
         
-        self.fetcher.close()
         return results, data  # Return data for potential plotting later
     
     def run_on_all_symbols(self):
