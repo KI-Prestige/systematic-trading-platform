@@ -1,89 +1,106 @@
 import pandas as pd
 import numpy as np
-from typing import Dict, Tuple
+from typing import Dict
 import os
-
-# Safe import for config and data
 import sys
+
+# Safe import
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.data.data_fetcher import DataFetcher
 from config import SYMBOLS
 
-class SimpleBacktester:
-    """Modular backtester with transaction costs and basic risk controls."""
-    
-    def __init__(self, transaction_cost: float = 0.001, max_position: float = 1.0):
-        self.transaction_cost = transaction_cost  # 0.1% round-trip per trade
+class RiskManager:
+    """Basic risk management - position sizing and drawdown control."""
+    def __init__(self, max_position: float = 1.0, max_drawdown_limit: float = -0.20):
         self.max_position = max_position
+        self.max_drawdown_limit = max_drawdown_limit  # Stop if DD exceeds 20%
+    
+    def calculate_position_size(self, volatility: float) -> float:
+        """Simple volatility-based sizing (inverse volatility)."""
+        if volatility == 0:
+            return self.max_position
+        return min(self.max_position, 0.10 / volatility)  # Target ~10% vol contribution
+
+class SimpleBacktester:
+    """Improved modular backtester with risk controls."""
+    
+    def __init__(self, transaction_cost: float = 0.001):
+        self.transaction_cost = transaction_cost
         self.fetcher = DataFetcher()
+        self.risk_manager = RiskManager()
     
     def run_simple_sma_strategy(self, symbol: str, short_window: int = 20, long_window: int = 50) -> Dict:
-        """Simple SMA crossover strategy as baseline (using our cached data)."""
         df = self.fetcher.fetch_and_cache([symbol])
         if df.empty:
             return {"error": "No data"}
         
-        # Prepare data for this symbol only
         data = df[df['symbol'] == symbol].copy()
         data.set_index('date', inplace=True)
         
-        # Calculate SMAs
-        data['short_sma'] = data['Close'].rolling(window=short_window).mean()
-        data['long_sma'] = data['Close'].rolling(window=long_window).mean()
+        data['short_sma'] = data['Close'].rolling(short_window).mean()
+        data['long_sma'] = data['Close'].rolling(long_window).mean()
         
-        # Generate signals
         data['signal'] = 0
-        data.loc[data['short_sma'] > data['long_sma'], 'signal'] = 1   # Long
-        data.loc[data['short_sma'] < data['long_sma'], 'signal'] = -1  # Short (for now, we'll treat as flat later if needed)
+        data.loc[data['short_sma'] > data['long_sma'], 'signal'] = 1
+        data.loc[data['short_sma'] < data['long_sma'], 'signal'] = 0  # Flat instead of short for simplicity
         
-        # Calculate returns
         data['market_return'] = data['Close'].pct_change()
         data['position'] = data['signal'].shift(1).fillna(0)
+        
+        # Risk-adjusted position (simple volatility targeting)
+        rolling_vol = data['market_return'].rolling(20).std()
+        data['position'] = data['position'] * data['position'].apply(
+            lambda p: self.risk_manager.calculate_position_size(rolling_vol.iloc[-1] if not rolling_vol.empty else 0.01)
+        )
+        
         data['strategy_return'] = data['position'] * data['market_return']
         
-        # Apply transaction costs (only on position changes)
+        # Transaction costs on position changes
         data['position_change'] = data['position'].diff().fillna(0)
         data['cost'] = abs(data['position_change']) * self.transaction_cost
-        data['strategy_return'] = data['strategy_return'] - data['cost']
+        data['strategy_return'] -= data['cost']
         
-        # Performance metrics
-        total_return = (1 + data['strategy_return']).prod() - 1
+        # Proper equity curve and drawdown
+        data['equity'] = (1 + data['strategy_return']).cumprod()
+        data['cum_return'] = data['equity'] - 1
+        data['peak'] = data['equity'].cummax()
+        data['drawdown'] = (data['equity'] - data['peak']) / data['peak']
+        
+        total_return = data['equity'].iloc[-1] - 1
         sharpe = data['strategy_return'].mean() / data['strategy_return'].std() * np.sqrt(252) if data['strategy_return'].std() > 0 else 0
-        max_dd = (data['strategy_return'].cumsum().cummax() - data['strategy_return'].cumsum()).min()
-        
-        equity_curve = (1 + data['strategy_return']).cumprod()
+        max_dd = data['drawdown'].min()
         
         results = {
             "symbol": symbol,
             "total_return": total_return,
             "sharpe_ratio": sharpe,
             "max_drawdown": max_dd,
-            "num_trades": int(abs(data['position_change']).sum()),
-            "equity_curve": equity_curve,
-            "final_equity": equity_curve.iloc[-1] if not equity_curve.empty else 1.0,
-            "data_points": len(data)
+            "num_trades": int((data['position_change'] != 0).sum()),
+            "final_equity": data['equity'].iloc[-1],
+            "max_drawdown_pct": max_dd * 100
         }
         
         self.fetcher.close()
-        return results
+        return results, data  # Return data for potential plotting later
     
-    def run_on_all_symbols(self) -> Dict:
-        """Run strategy on all symbols and aggregate."""
+    def run_on_all_symbols(self):
         results = {}
         for symbol in SYMBOLS:
-            print(f"Running SMA strategy on {symbol}...")
-            res = self.run_simple_sma_strategy(symbol)
+            print(f"Running improved SMA strategy on {symbol}...")
+            res, _ = self.run_simple_sma_strategy(symbol)
             results[symbol] = res
         return results
+    
+    def close(self):
+        self.fetcher.close()
+
 
 # Test
 if __name__ == "__main__":
-    bt = SimpleBacktester(transaction_cost=0.001)
+    bt = SimpleBacktester()
     results = bt.run_on_all_symbols()
     for symbol, res in results.items():
-        print(f"\n{symbol}:")
-        print(f"  Total Return: {res['total_return']:.2%}")
-        print(f"  Sharpe: {res['sharpe_ratio']:.2f}")
-        print(f"  Max DD: {res['max_drawdown']:.2%}")
-        print(f"  Trades: {res['num_trades']}")
+        print(f"\n{symbol}: Return {res['total_return']:.2%} | Sharpe {res['sharpe_ratio']:.2f} | Max DD {res['max_drawdown_pct']:.2f}% | Trades {res['num_trades']}")
+
+    bt.close()
