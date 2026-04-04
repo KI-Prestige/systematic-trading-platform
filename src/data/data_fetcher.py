@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 from typing import List, Optional
 
-from ...config import SYMBOLS, START_DATE, END_DATE, TIMEFRAME
+from config import SYMBOLS, START_DATE, END_DATE, TIMEFRAME
 
 class DataFetcher:
     """Production-ready data fetcher with SQLite caching."""
