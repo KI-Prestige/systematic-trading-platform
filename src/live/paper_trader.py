@@ -12,12 +12,21 @@ class PaperTrader:
     """Safe paper trading execution with position sizing and risk checks."""
     
     def __init__(self):
-        self.client = TradingClient(
-            os.getenv("ALPACA_API_KEY"),
-            os.getenv("ALPACA_SECRET_KEY"),
-            paper=True
-        )
+        # 1. Force load from the root directory (up two levels from this file)
+        env_path = os.path.join(os.path.dirname(__file__), '../../.env')
+        load_dotenv(dotenv_path=env_path)
+        
+        api_key = os.getenv("ALPACA_API_KEY")
+        secret_key = os.getenv("ALPACA_SECRET_KEY")
+
+        # 2. Debug check (delete this after it works)
+        if not api_key or not secret_key:
+            print(f"❌ ERROR: Keys not found at {os.path.abspath(env_path)}")
+            sys.exit(1) # Stop the script immediately
+            
+        self.client = TradingClient(api_key, secret_key, paper=True)
         print("✅ Connected to Alpaca Paper Trading")
+
     
     def get_account(self):
         account = self.client.get_account()
