@@ -67,3 +67,5 @@ wcwidth==0.6.0
 websockets==16.0
 widgetsnbextension==4.0.15
 yfinance==1.2.0
+alpaca-py
+python-dotenv
