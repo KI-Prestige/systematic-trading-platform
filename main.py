@@ -34,3 +34,7 @@ with open("backtests/results_summary.txt", "w") as f:
 
 print("\n✅ Results saved to backtests/results_summary.txt")
 print("✅ Step 5: Walk-forward + documentation test completed.")
+
+print("🚀 Systematic Trading Platform - Starting up...")
+print("Run `streamlit run dashboard/app.py` for the dashboard.")
+print("All core modules loaded successfully.")

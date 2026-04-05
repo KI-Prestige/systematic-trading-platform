@@ -24,6 +24,9 @@ Built as a quant developer portfolio project focusing on clean architecture, dat
 ## Project Status (April 2026)
 - Phase 1-5 complete: Data → Backtester → Risk → Walk-forward
 - Next: Dashboard and paper-trading integration
+- Phase 1 (Engineering Foundation) COMPLETE
+
 
 ## Goal
 Demonstrate real-world quant developer skills: reliable infrastructure, risk awareness, and reproducible results.
+To run dashboard: streamlit run dashboard/app.py
