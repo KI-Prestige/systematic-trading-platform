@@ -1,6 +1,7 @@
 print("🚀 Systematic Trading Platform - Starting up...")
 
 from config import SYMBOLS
+from live.order_logger import OrderLogger
 from src.strategies.signal_generator import SignalGenerator
 from src.live.paper_trader import PaperTrader
 
@@ -14,14 +15,14 @@ signals = sg.get_all_signals()
 for symbol, sig in signals.items():
     print(f"{symbol}: {sig['signal'].upper()} | Price ${sig['latest_price']:.2f} | Suggested Size {sig['suggested_position_size']}")
 
-# Safe paper execution
-print("\n=== Safe Paper Trading Execution ===")
+# Safe paper execution with logging
+print("\n=== Safe Paper Trading Execution with Logging ===")
 trader = PaperTrader()
+logger = OrderLogger()
 trader.get_account()
 
-print("\nExecuting safe paper orders based on signals (small sizes only)...")
+print("\nExecuting safe paper orders...")
 for symbol, sig in signals.items():
-    trader.submit_safe_order(symbol, sig['signal'], sig['suggested_position_size'])
+    trader.submit_safe_order(symbol, sig['signal'], sig['suggested_position_size'], logger=logger)
 
-print("\n✅ Full cycle complete: Signals → Risk-checked Paper Execution")
-print("Note: This is PAPER trading only. No real money is used.")
+print("\nCurrent paper positions:", logger.get_current_positions())

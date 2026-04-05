@@ -5,7 +5,7 @@ from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, OrderType, TimeInForce
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
+from src.live.order_logger import OrderLogger
 load_dotenv()
 
 class PaperTrader:
@@ -27,30 +27,33 @@ class PaperTrader:
         print(f"Paper Account → Equity: ${equity:.2f} | Cash: ${cash:.2f}")
         return equity, cash
     
-    def submit_safe_order(self, symbol: str, signal: str, suggested_size: float = 1.0):
-        """Place order only if signal is valid and size is reasonable."""
+    def submit_safe_order(self, symbol: str, signal: str, suggested_size: float = 1.0, logger=None):
         if signal not in ["buy", "sell"]:
-            print(f"ℹ️ No action for {symbol} (signal: {signal})")
+            print(f"ℹ️ No action for {symbol}")
             return None
         
-        # Safety: limit position size to 5-10% of portfolio max
-        safe_qty = max(1, int(suggested_size * 5))  # Small size for paper testing (e.g. 5 shares max)
-        
-        side = OrderSide.BUY if signal == "buy" else OrderSide.SELL
+        safe_qty = max(1, int(suggested_size * 5))
+        side = "BUY" if signal == "buy" else "SELL"
         
         try:
             order_data = MarketOrderRequest(
                 symbol=symbol,
                 qty=safe_qty,
-                side=side,
+                side=OrderSide.BUY if signal == "buy" else OrderSide.SELL,
                 type=OrderType.MARKET,
                 time_in_force=TimeInForce.DAY
             )
             order = self.client.submit_order(order_data)
-            print(f"✅ PAPER ORDER EXECUTED: {side.upper()} {safe_qty} shares of {symbol} | Order ID: {order.id}")
+            
+            # Log the order
+            if logger:
+                logger.log_order(symbol, side, safe_qty, None, order.id)
+            else:
+                print(f"✅ PAPER ORDER: {side} {safe_qty} {symbol}")
+            
             return order
         except Exception as e:
-            print(f"❌ Order failed for {symbol}: {e}")
+            print(f"❌ Order failed: {e}")
             return None
 
 # Test
