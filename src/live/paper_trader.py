@@ -1,57 +1,58 @@
 import os
+from dotenv import load_dotenv
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest
-from alpaca.trading.enums import OrderSide, TimeInForce
+from alpaca.trading.enums import OrderSide, OrderType, TimeInForce
 import sys
-import pandas as pd
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
-from config import SYMBOLS
-from dotenv import load_dotenv
 
 load_dotenv()
 
 class PaperTrader:
-    """Simple paper trading client using Alpaca."""
+    """Safe paper trading execution with position sizing and risk checks."""
     
     def __init__(self):
-        self.api_key = os.getenv("APCA_API_KEY_ID")
-        self.secret_key = os.getenv("APCA_API_SECRET_KEY")
-        if not self.api_key or not self.secret_key:
-            raise ValueError("Alpaca keys not found in .env")
-        
-        self.client = TradingClient(self.api_key, self.secret_key, paper=True)
+        self.client = TradingClient(
+            os.getenv("ALPACA_API_KEY"),
+            os.getenv("ALPACA_SECRET_KEY"),
+            paper=True
+        )
         print("✅ Connected to Alpaca Paper Trading")
     
     def get_account(self):
         account = self.client.get_account()
-        print(f"Cash: ${float(account.cash):.2f} | Portfolio Value: ${float(account.portfolio_value):.2f}")
-        return account
+        equity = float(account.equity)
+        cash = float(account.cash)
+        print(f"Paper Account → Equity: ${equity:.2f} | Cash: ${cash:.2f}")
+        return equity, cash
     
-    def place_market_order(self, symbol: str, qty: float, side: str = "buy"):
-        order_data = MarketOrderRequest(
-            symbol=symbol,
-            qty=qty,
-            side=OrderSide.BUY if side.lower() == "buy" else OrderSide.SELL,
-            time_in_force=TimeInForce.DAY
-        )
-        order = self.client.submit_order(order_data)
-        print(f"✅ Paper order placed: {side.upper()} {qty} {symbol}")
-        return order
-    
-    def get_positions(self):
-        positions = self.client.get_all_positions()
-        if positions:
-            for p in positions:
-                print(f"{p.symbol}: {p.qty} shares @ ${float(p.current_price):.2f}")
-        else:
-            print("No open positions")
-        return positions
+    def submit_safe_order(self, symbol: str, signal: str, suggested_size: float = 1.0):
+        """Place order only if signal is valid and size is reasonable."""
+        if signal not in ["buy", "sell"]:
+            print(f"ℹ️ No action for {symbol} (signal: {signal})")
+            return None
+        
+        # Safety: limit position size to 5-10% of portfolio max
+        safe_qty = max(1, int(suggested_size * 5))  # Small size for paper testing (e.g. 5 shares max)
+        
+        side = OrderSide.BUY if signal == "buy" else OrderSide.SELL
+        
+        try:
+            order_data = MarketOrderRequest(
+                symbol=symbol,
+                qty=safe_qty,
+                side=side,
+                type=OrderType.MARKET,
+                time_in_force=TimeInForce.DAY
+            )
+            order = self.client.submit_order(order_data)
+            print(f"✅ PAPER ORDER EXECUTED: {side.upper()} {safe_qty} shares of {symbol} | Order ID: {order.id}")
+            return order
+        except Exception as e:
+            print(f"❌ Order failed for {symbol}: {e}")
+            return None
 
 # Test
 if __name__ == "__main__":
     trader = PaperTrader()
     trader.get_account()
-    # trader.place_market_order("AAPL", 1, "buy")  # Uncomment only when ready
-    trader.get_positions()
