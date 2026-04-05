@@ -14,14 +14,17 @@ signals = sg.get_all_signals()
 for symbol, sig in signals.items():
     print(f"{symbol}: {sig['signal'].upper()} | Price ${sig['latest_price']:.2f} | Suggested Size {sig['suggested_position_size']}")
 
-# Safe paper execution with logging
-print("\n=== Safe Paper Trading Execution with Logging ===")
+# Safe paper execution with position awareness
+print("\n=== Safe Paper Trading Execution with Position Awareness ===")
 trader = PaperTrader()
 logger = OrderLogger()
 trader.get_account()
 
-print("\nExecuting safe paper orders...")
+print("\nCurrent positions before execution:", logger.get_current_positions())
+
+print("\nExecuting safe paper orders (position-aware)...")
 for symbol, sig in signals.items():
     trader.submit_safe_order(symbol, sig['signal'], sig['suggested_position_size'], logger=logger)
 
-print("\nCurrent paper positions:", logger.get_current_positions())
+print("\nUpdated positions:", logger.get_current_positions())
+print("\n✅ Full cycle with position tracking complete.")

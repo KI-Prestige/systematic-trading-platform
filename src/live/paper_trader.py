@@ -29,31 +29,37 @@ class PaperTrader:
     
     def submit_safe_order(self, symbol: str, signal: str, suggested_size: float = 1.0, logger=None):
         if signal not in ["buy", "sell"]:
-            print(f"ℹ️ No action for {symbol}")
+            print(f"ℹ️ No action for {symbol} (signal: {signal})")
             return None
         
+        positions = logger.get_current_positions() if logger else {}
+        current_pos = positions.get(symbol, 0)
+        
         safe_qty = max(1, int(suggested_size * 5))
+        
+        # Safety: don't sell more than you hold
+        if signal == "sell" and current_pos <= 0:
+            print(f"⚠️ Skipping SELL for {symbol} - no long position held (current: {current_pos})")
+            return None
+        
         side = "BUY" if signal == "buy" else "SELL"
         
         try:
             order_data = MarketOrderRequest(
                 symbol=symbol,
                 qty=safe_qty,
-                side=OrderSide.BUY if signal == "buy" else OrderSide.SELL,
+                side=OrderSide.BUY if side == "BUY" else OrderSide.SELL,
                 type=OrderType.MARKET,
                 time_in_force=TimeInForce.DAY
             )
             order = self.client.submit_order(order_data)
             
-            # Log the order
             if logger:
                 logger.log_order(symbol, side, safe_qty, None, order.id)
-            else:
-                print(f"✅ PAPER ORDER: {side} {safe_qty} {symbol}")
-            
+            print(f"✅ PAPER ORDER EXECUTED: {side} {safe_qty} {symbol} | Order ID: {order.id}")
             return order
         except Exception as e:
-            print(f"❌ Order failed: {e}")
+            print(f"❌ Order failed for {symbol}: {e}")
             return None
 
 # Test

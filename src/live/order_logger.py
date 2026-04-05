@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 class OrderLogger:
-    """Simple logger to track all paper orders and build portfolio history."""
+    """Tracks orders, positions, and basic P&L."""
     
     def __init__(self, log_file: str = "backtests/paper_orders.csv"):
         self.log_file = log_file
@@ -33,16 +33,19 @@ class OrderLogger:
     def get_current_positions(self):
         if self.orders.empty:
             return {}
-        # Simple net position calculation
         positions = {}
         for symbol in self.orders['symbol'].unique():
             buys = self.orders[(self.orders['symbol'] == symbol) & (self.orders['action'] == 'BUY')]['qty'].sum()
             sells = self.orders[(self.orders['symbol'] == symbol) & (self.orders['action'] == 'SELL')]['qty'].sum()
-            positions[symbol] = buys - sells
+            net = buys - sells
+            if net != 0:
+                positions[symbol] = net
         return positions
+    
+    def get_total_trades(self):
+        return len(self.orders)
 
 # Test
 if __name__ == "__main__":
     logger = OrderLogger()
-    logger.log_order("AAPL", "sell", 5, 253.79, "test123")
     print("Current positions:", logger.get_current_positions())
