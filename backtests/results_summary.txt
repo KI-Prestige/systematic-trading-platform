@@ -1,0 +1,27 @@
+Backtest Summary
+================
+
+AAPL:
+  Return: 227.97%
+  Sharpe: 0.64
+  Max DD: -29.80%
+  Trades: 66
+
+MSFT:
+  Return: 184.56%
+  Sharpe: 0.57
+  Max DD: -44.07%
+  Trades: 58
+
+GOOGL:
+  Return: 381.02%
+  Sharpe: 0.76
+  Max DD: -38.98%
+  Trades: 58
+
+TSLA:
+  Return: 423.49%
+  Sharpe: 0.56
+  Max DD: -60.63%
+  Trades: 66
+
