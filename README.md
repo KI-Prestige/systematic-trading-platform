@@ -1,29 +1,29 @@
 # Systematic Trading Platform
 
-Production-grade systematic trading platform built in Python.  
-Focus: modular backtesting, risk management, paper-trading, and live dashboard.  
-This is my quant developer portfolio project — designed for real-world deployment.
+Production-grade Python framework for systematic trading.  
+Built as a quant developer portfolio project focusing on clean architecture, data caching, backtesting, and risk management.
 
-## Features (in progress)
-- Clean modular architecture
-- Walk-forward validation and stress testing
-- Dynamic risk controls
-- Broker paper-trading integration (planned)
-- Dashboard for monitoring
+## Features
+- Robust data pipeline with SQLite caching (yfinance)
+- Modular backtester with transaction costs and risk controls
+- Walk-forward validation
+- RiskManager for position sizing and drawdown limits
 
 ## Tech Stack
-- Python 3.11+
-- pandas, yfinance, scikit-learn
-- Will add: VectorBT / backtesting.py, Streamlit, broker APIs
+- Python, pandas, yfinance, sqlite3
+- Modular package structure
 
-## Quick Start
+## How to Run
 1. `git clone https://github.com/KI-Prestige/systematic-trading-platform.git`
 2. `cd systematic-trading-platform`
 3. `python -m venv venv`
 4. `venv\Scripts\activate` (Windows)
 5. `pip install -r requirements.txt`
-6. `cp .env.example .env` (later)
-7. `python main.py`
+6. `python main.py`
 
-## Project Status
-Phase 1: Engineering Foundation — In Progress
+## Project Status (April 2026)
+- Phase 1-5 complete: Data → Backtester → Risk → Walk-forward
+- Next: Dashboard and paper-trading integration
+
+## Goal
+Demonstrate real-world quant developer skills: reliable infrastructure, risk awareness, and reproducible results.
