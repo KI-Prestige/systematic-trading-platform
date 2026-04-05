@@ -19,14 +19,6 @@ class PaperTrader:
         )
         print("✅ Connected to Alpaca Paper Trading")
 
-        # 2. Debug check (delete this after it works)
-        if not api_key or not secret_key:
-            print(f"❌ ERROR: Keys not found at {os.path.abspath(env_path)}")
-            sys.exit(1) # Stop the script immediately
-            
-        self.client = TradingClient(api_key, secret_key, paper=True)
-        print("✅ Connected to Alpaca Paper Trading")
-
     
     def get_account(self):
         account = self.client.get_account()
