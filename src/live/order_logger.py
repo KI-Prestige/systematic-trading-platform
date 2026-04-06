@@ -42,10 +42,16 @@ class OrderLogger:
                 positions[symbol] = net
         return positions
     
-    def get_total_trades(self):
-        return len(self.orders)
+    def get_trade_history(self):
+        return self.orders
+
+# Simple P&L placeholder (will improve with real prices later)
+    def get_basic_pnl_summary(self):
+        if self.orders.empty:
+            return "No trades yet"
+        return f"Total trades executed: {len(self.orders)} | Current positions: {len(self.get_current_positions())} symbols"
 
 # Test
 if __name__ == "__main__":
     logger = OrderLogger()
-    print("Current positions:", logger.get_current_positions())
+    print(logger.get_basic_pnl_summary())

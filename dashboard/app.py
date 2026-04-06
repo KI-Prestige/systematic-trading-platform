@@ -57,6 +57,12 @@ with tab3:
                 st.dataframe(pos_df)
             else:
                 st.write("No positions yet.")
+
+            st.subheader("P&L Summary")
+            logger = OrderLogger()
+            st.write(logger.get_basic_pnl_summary())
+            st.subheader("Trade History")
+            st.dataframe(logger.get_trade_history().tail(10))
             
             st.subheader("Recent Orders")
             if not logger.orders.empty:
