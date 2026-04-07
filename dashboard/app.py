@@ -39,35 +39,31 @@ with tab2:
                 st.write(f"Reason: {sig['reason']}")
 
 with tab3:
-    if st.button("Refresh Paper Portfolio"):
-        with st.spinner("Fetching paper account & orders..."):
+    if st.button("🔄 Refresh Paper Portfolio"):
+        with st.spinner("Loading latest paper account and orders..."):
             trader = PaperTrader()
             logger = OrderLogger()
             
-            equity, cash = trader.get_account()  # This will print to console, but we can improve later
+            equity, cash = trader.get_account()
             
             st.subheader("Paper Account")
-            st.metric("Equity", f"${equity:.2f}")
-            st.metric("Cash", f"${cash:.2f}")
+            col1, col2 = st.columns(2)
+            col1.metric("Equity", f"${equity:.2f}")
+            col2.metric("Cash", f"${cash:.2f}")
             
-            positions = logger.get_current_positions()
             st.subheader("Current Positions")
+            positions = logger.get_current_positions()
             if positions:
                 pos_df = pd.DataFrame(list(positions.items()), columns=["Symbol", "Net Shares"])
                 st.dataframe(pos_df)
             else:
-                st.write("No positions yet.")
-
-            st.subheader("P&L Summary")
-            logger = OrderLogger()
-            st.write(logger.get_basic_pnl_summary())
-            st.subheader("Trade History")
-            st.dataframe(logger.get_trade_history().tail(10))
+                st.info("No open positions yet.")
             
-            st.subheader("Recent Orders")
-            if not logger.orders.empty:
-                st.dataframe(logger.orders.tail(10))
+            st.subheader("Recent Orders (Latest First)")
+            history = logger.get_trade_history()
+            if not history.empty:
+                st.dataframe(history.head(15))
             else:
-                st.write("No orders logged yet.")
+                st.info("No orders logged yet. Run main.py to generate signals and orders.")
 
 st.caption("Built as part of a systematic trading platform for job portfolio | Paper trading only")
