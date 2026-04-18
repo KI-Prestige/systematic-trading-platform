@@ -12,7 +12,7 @@ sg = SignalGenerator()
 signals = sg.get_all_signals()
 
 for symbol, sig in signals.items():
-    print(f"{symbol}: {sig['signal'].upper()} | Price ${sig['latest_price']:.2f} | Suggested Size {sig['suggested_position_size']}")
+    print(f"{symbol}: {sig['signal'].upper()} | Price ${sig['latest_price']:.2f} | Suggested Size {sig['suggested_size']}")
 
 # Safe paper execution with position awareness
 print("\n=== Safe Paper Trading Execution with Position Awareness ===")
@@ -24,7 +24,7 @@ print("\nCurrent positions before execution:", logger.get_current_positions())
 
 print("\nExecuting safe paper orders (position-aware)...")
 for symbol, sig in signals.items():
-    trader.submit_safe_order(symbol, sig['signal'], sig['suggested_position_size'], logger=logger)
+    trader.submit_safe_order(symbol, sig['signal'], sig['suggested_size'], logger=logger)
 
 print("\nUpdated positions:", logger.get_current_positions())
 print("\n✅ Full cycle with position tracking complete.")

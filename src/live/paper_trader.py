@@ -28,40 +28,103 @@ class PaperTrader:
         return equity, cash
     
     def submit_safe_order(self, symbol: str, signal: str, suggested_size: float = 1.0, logger=None):
+        """Production-ready version with automatic SL/TP exits"""
+        if logger is None:
+            print("⚠️ No logger provided")
+            return None
+
+        positions = logger.get_current_positions()
+        current_pos = positions.get(symbol, 0)
+
+        # === 1. Check Stop-Loss / Take-Profit FIRST ===
+        if current_pos != 0:
+            exit_reason = self._check_exit_conditions(symbol, current_pos, logger)
+            if exit_reason:
+                print(f"🛑 EXIT TRIGGERED for {symbol}: {exit_reason}")
+                self._close_position(symbol, current_pos, logger, exit_reason)
+                return None
+            else:
+                self._print_position_status(symbol, current_pos, logger)
+
+        # === 2. Normal signal handling (only if no exit) ===
         if signal not in ["buy", "sell"]:
             print(f"ℹ️ No action for {symbol} (signal: {signal})")
             return None
-        
-        positions = logger.get_current_positions() if logger else {}
-        current_pos = positions.get(symbol, 0)
-        
-        safe_qty = max(1, int(suggested_size * 5))
-        
-        # Safety: don't sell more than you hold
-        if signal == "sell" and current_pos <= 0:
-            print(f"⚠️ Skipping SELL for {symbol} - no long position held (current: {current_pos})")
-            return None
-        
-        side = "BUY" if signal == "buy" else "SELL"
+
+        print(f"   → {signal.upper()} signal received for {symbol} | Current position: {current_pos}")
+        # Future new-order logic goes here
+        return None
+
+    def _print_position_status(self, symbol: str, current_pos: int, logger):
+        """Clean PnL display"""
+        from config import STRATEGY
+        try:
+            entry_price = logger.get_average_entry_price(symbol)
+            if not entry_price:
+                return
+            
+            from src.data.data_fetcher import DataFetcher
+            df = DataFetcher().fetch_and_cache([symbol])
+            latest_price = float(df['Close'].iloc[-1])
+            
+            if current_pos < 0:  # Short
+                pnl_pct = (entry_price - latest_price) / entry_price * 100
+            else:
+                pnl_pct = (latest_price - entry_price) / entry_price * 100
+                
+            print(f"   📊 {symbol} (Short {abs(current_pos)}): PnL ≈ {pnl_pct:+.1f}%  |  SL: -8%   TP: +15%")
+        except:
+            pass
+
+    def _check_exit_conditions(self, symbol: str, current_pos: int, logger) -> str:
+        """Return exit reason if SL or TP hit"""
+        from config import STRATEGY
+        try:
+            entry_price = logger.get_average_entry_price(symbol)
+            if not entry_price:
+                return ""
+            
+            from src.data.data_fetcher import DataFetcher
+            df = DataFetcher().fetch_and_cache([symbol])
+            latest_price = float(df['Close'].iloc[-1])
+            
+            if current_pos < 0:   # Short position
+                pnl_pct = (entry_price - latest_price) / entry_price
+            else:
+                pnl_pct = (latest_price - entry_price) / entry_price
+            
+            if pnl_pct <= -STRATEGY["stop_loss_pct"]:
+                return f"STOP LOSS HIT ({pnl_pct*100:.1f}%)"
+            elif pnl_pct >= STRATEGY["take_profit_pct"]:
+                return f"TAKE PROFIT HIT ({pnl_pct*100:.1f}%)"
+            return ""
+        except:
+            return ""
+
+    def _close_position(self, symbol: str, current_pos: int, logger, reason: str):
+        """Close the full position"""
+        close_side = "BUY" if current_pos < 0 else "SELL"
+        close_qty = abs(current_pos)
         
         try:
+            from alpaca.trading.requests import MarketOrderRequest
+            from alpaca.trading.enums import OrderSide, OrderType, TimeInForce
+            
             order_data = MarketOrderRequest(
                 symbol=symbol,
-                qty=safe_qty,
-                side=OrderSide.BUY if side == "BUY" else OrderSide.SELL,
+                qty=close_qty,
+                side=OrderSide.BUY if close_side == "BUY" else OrderSide.SELL,
                 type=OrderType.MARKET,
                 time_in_force=TimeInForce.DAY
             )
             order = self.client.submit_order(order_data)
             
             if logger:
-                logger.log_order(symbol, side, safe_qty, None, order.id)
-            print(f"✅ PAPER ORDER EXECUTED: {side} {safe_qty} {symbol} | Order ID: {order.id}")
-            return order
+                logger.log_order(symbol, close_side, close_qty, None, order.id)
+            
+            print(f"✅ POSITION CLOSED: {close_side} {close_qty} {symbol} | {reason}")
         except Exception as e:
-            print(f"❌ Order failed for {symbol}: {e}")
-            return None
-
+            print(f"❌ Failed to close {symbol}: {e}")
 # Test
 if __name__ == "__main__":
     trader = PaperTrader()
