@@ -77,7 +77,7 @@ class PaperTrader:
             pass
 
     def _check_exit_conditions(self, symbol: str, current_pos: int, logger) -> str:
-        """Return exit reason if SL or TP hit"""
+        """Enhanced exit check with trailing stop"""
         from config import STRATEGY
         try:
             entry_price = logger.get_average_entry_price(symbol)
@@ -93,10 +93,20 @@ class PaperTrader:
             else:
                 pnl_pct = (latest_price - entry_price) / entry_price
             
+            # Hard Stop-Loss
             if pnl_pct <= -STRATEGY["stop_loss_pct"]:
                 return f"STOP LOSS HIT ({pnl_pct*100:.1f}%)"
-            elif pnl_pct >= STRATEGY["take_profit_pct"]:
+            
+            # Hard Take-Profit
+            if pnl_pct >= STRATEGY["take_profit_pct"]:
                 return f"TAKE PROFIT HIT ({pnl_pct*100:.1f}%)"
+            
+            # New: Trailing Stop (once in profit by 5%, trail by 5%)
+            if pnl_pct >= STRATEGY["trailing_stop_pct"]:
+                trailing_level = pnl_pct - STRATEGY["trailing_stop_pct"]
+                if pnl_pct < trailing_level:   # Price moved against us after profit
+                    return f"TRAILING STOP HIT ({pnl_pct*100:.1f}%)"
+            
             return ""
         except:
             return ""

@@ -33,19 +33,11 @@ class SignalGenerator:
         data.set_index('date', inplace=True)
         data = data.sort_index()
         
-        # === Core Indicators ===
+        # Core indicators
         data['short_sma'] = data['Close'].rolling(window=self.short_window).mean()
         data['long_sma'] = data['Close'].rolling(window=self.long_window).mean()
-        
-        # ADX (Trend Strength)
-        data['adx'] = ta.trend.ADXIndicator(
-            high=data['High'], 
-            low=data['Low'], 
-            close=data['Close'], 
-            window=STRATEGY["adx_window"]
-        ).adx()
-        
-        # Volume
+        data['regime_sma'] = data['Close'].rolling(window=STRATEGY["regime_window"]).mean()
+        data['adx'] = ta.trend.ADXIndicator(high=data['High'], low=data['Low'], close=data['Close'], window=STRATEGY["adx_window"]).adx()
         data['avg_volume'] = data['Volume'].rolling(window=20).mean()
         
         latest = data.iloc[-1]
@@ -58,48 +50,47 @@ class SignalGenerator:
         suggested_size = max(STRATEGY["min_position_size"], 
                            min(STRATEGY["max_position_size"], suggested_size))
         
-        # === FILTERS ===
+        # Crossover Detection
+        golden_cross = (previous['short_sma'] <= previous['long_sma']) and (latest['short_sma'] > latest['long_sma'])
+        death_cross = (previous['short_sma'] >= previous['long_sma']) and (latest['short_sma'] < latest['long_sma'])
+        
+        # === Market Regime Filter (Mild Improvement) ===
+        in_uptrend = latest['Close'] > latest['regime_sma']
+        
+        # Filters
         filters_passed = []
         reason_parts = []
         
-        # 1. Volatility Filter
         if recent_vol > STRATEGY["max_volatility"]:
             return {"symbol": symbol, "signal": "hold", 
                     "reason": f"Volatility too high ({recent_vol:.4f})", 
                     "latest_price": round(latest['Close'], 2), "suggested_size": 0.0}
         
-        # 2. ADX Trend Strength Filter
-        adx_value = latest['adx']
-        if adx_value < STRATEGY["adx_threshold"]:
-            reason_parts.append(f"Weak trend (ADX {adx_value:.1f} < {STRATEGY['adx_threshold']})")
-        else:
+        if latest['adx'] >= STRATEGY["adx_threshold"]:
             filters_passed.append("Strong trend")
+        else:
+            reason_parts.append(f"Weak trend (ADX {latest['adx']:.1f})")
         
-        # 3. Volume Confirmation
-        volume_confirm = latest['Volume'] > (latest['avg_volume'] * STRATEGY["volume_multiplier"])
-        if volume_confirm:
-            filters_passed.append("Volume confirmed")
+        if latest['Volume'] > (latest['avg_volume'] * STRATEGY["volume_multiplier"]):
+            filters_passed.append("Volume OK")
         else:
             reason_parts.append("Low volume")
         
-        # === Crossover Detection ===
-        golden_cross = (previous['short_sma'] <= previous['long_sma']) and (latest['short_sma'] > latest['long_sma'])
-        death_cross = (previous['short_sma'] >= previous['long_sma']) and (latest['short_sma'] < latest['long_sma'])
-        
-        if golden_cross and len(filters_passed) >= 1:
+        # Final Signal with Regime Filter
+        if golden_cross and in_uptrend and len(filters_passed) >= 1:
             signal = "buy"
-            reason = f"GOLDEN CROSS + Filters passed: {', '.join(filters_passed)}"
-        elif death_cross and len(filters_passed) >= 1:
+            reason = f"GOLDEN CROSS in uptrend (above 200 SMA) + filters passed"
+        elif death_cross and not in_uptrend and len(filters_passed) >= 1:
             signal = "sell"
-            reason = f"DEATH CROSS + Filters passed: {', '.join(filters_passed)}"
+            reason = f"DEATH CROSS in downtrend (below 200 SMA) + filters passed"
         else:
             signal = "hold"
-            reason = " | ".join(reason_parts) if reason_parts else "No crossover or filters not met"
+            reason = "No qualified crossover or regime/filters not met"
         
         # Anti-repeat logic
         if signal != "hold" and self.previous_signals.get(symbol) == signal:
             signal = "hold"
-            reason = f"Waiting for opposite signal (last: {signal.upper()})"
+            reason = f"Waiting for opposite signal (last was {signal.upper()})"
         
         if signal != "hold":
             self.previous_signals[symbol] = signal
@@ -111,11 +102,11 @@ class SignalGenerator:
             "latest_price": round(latest['Close'], 2),
             "suggested_size": round(suggested_size, 2),
             "volatility": round(recent_vol, 4),
-            "adx": round(adx_value, 1),
+            "adx": round(latest['adx'], 1),
             "short_sma": round(latest['short_sma'], 2),
-            "long_sma": round(latest['long_sma'], 2)
+            "long_sma": round(latest['long_sma'], 2),
+            "regime_sma": round(latest.get('regime_sma', 0), 2)
         }
-    
     def get_all_signals(self):
         signals = {}
         for symbol in SYMBOLS:
@@ -131,3 +122,4 @@ if __name__ == "__main__":
     for symbol, sig in signals.items():
         print(f"{symbol}: {sig['signal'].upper()} | Price ${sig['latest_price']} | Size {sig['suggested_size']} | ADX {sig.get('adx', 'N/A')}")
         print(f"   → {sig['reason']}\n")
+
