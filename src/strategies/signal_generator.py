@@ -33,7 +33,7 @@ class SignalGenerator:
         data.set_index('date', inplace=True)
         data = data.sort_index()
         
-        # Core indicators
+        # Core indicators (keep existing)
         data['short_sma'] = data['Close'].rolling(window=self.short_window).mean()
         data['long_sma'] = data['Close'].rolling(window=self.long_window).mean()
         data['regime_sma'] = data['Close'].rolling(window=STRATEGY["regime_window"]).mean()
@@ -45,16 +45,26 @@ class SignalGenerator:
         
         recent_vol = data['Close'].pct_change().tail(20).std()
         
-        # Volatility-adjusted size
-        suggested_size = STRATEGY["target_volatility"] / (recent_vol + 0.0001)
+        # === Volatility-Based Position Sizing (Mild Improvement) ===
+        suggested_size = STRATEGY["risk_per_trade"] / (recent_vol + 0.0001)
         suggested_size = max(STRATEGY["min_position_size"], 
                            min(STRATEGY["max_position_size"], suggested_size))
+        
+        # === Dynamic ADX Threshold ===
+        base_adx = STRATEGY["adx_threshold"]
+        dynamic_adx_threshold = base_adx
+        if STRATEGY.get("dynamic_adx", True):
+            # Increase required ADX when volatility is high
+            if recent_vol > 0.025:
+                dynamic_adx_threshold = base_adx + 3
+            elif recent_vol < 0.015:
+                dynamic_adx_threshold = base_adx - 2
         
         # Crossover Detection
         golden_cross = (previous['short_sma'] <= previous['long_sma']) and (latest['short_sma'] > latest['long_sma'])
         death_cross = (previous['short_sma'] >= previous['long_sma']) and (latest['short_sma'] < latest['long_sma'])
         
-        # === Market Regime Filter (Mild Improvement) ===
+        # Market Regime Filter
         in_uptrend = latest['Close'] > latest['regime_sma']
         
         # Filters
@@ -66,8 +76,8 @@ class SignalGenerator:
                     "reason": f"Volatility too high ({recent_vol:.4f})", 
                     "latest_price": round(latest['Close'], 2), "suggested_size": 0.0}
         
-        if latest['adx'] >= STRATEGY["adx_threshold"]:
-            filters_passed.append("Strong trend")
+        if latest['adx'] >= dynamic_adx_threshold:
+            filters_passed.append(f"Strong trend (ADX {latest['adx']:.1f})")
         else:
             reason_parts.append(f"Weak trend (ADX {latest['adx']:.1f})")
         
@@ -76,16 +86,16 @@ class SignalGenerator:
         else:
             reason_parts.append("Low volume")
         
-        # Final Signal with Regime Filter
-        if golden_cross and in_uptrend and len(filters_passed) >= 1:
+        # Final Signal with Regime + Momentum
+        if golden_cross and in_uptrend and latest['Close'] > latest['short_sma'] and len(filters_passed) >= 1:
             signal = "buy"
-            reason = f"GOLDEN CROSS in uptrend (above 200 SMA) + filters passed"
-        elif death_cross and not in_uptrend and len(filters_passed) >= 1:
+            reason = f"GOLDEN CROSS in uptrend + positive momentum + filters passed"
+        elif death_cross and not in_uptrend and latest['Close'] < latest['short_sma'] and len(filters_passed) >= 1:
             signal = "sell"
-            reason = f"DEATH CROSS in downtrend (below 200 SMA) + filters passed"
+            reason = f"DEATH CROSS in downtrend + negative momentum + filters passed"
         else:
             signal = "hold"
-            reason = "No qualified crossover or regime/filters not met"
+            reason = "No qualified crossover or regime/momentum/filters not met"
         
         # Anti-repeat logic
         if signal != "hold" and self.previous_signals.get(symbol) == signal:
@@ -107,6 +117,7 @@ class SignalGenerator:
             "long_sma": round(latest['long_sma'], 2),
             "regime_sma": round(latest.get('regime_sma', 0), 2)
         }
+    
     def get_all_signals(self):
         signals = {}
         for symbol in SYMBOLS:

@@ -28,6 +28,9 @@ STRATEGY = {
     "regime_window": 200,                  # Keep for future
     "min_hold_bars": 5,                    # Ignore opposite signals for 5 days
     "risk_per_trade": 0.01,                # Risk 1% of capital per trade (mild)
+    "momentum_confirmation": True,         # Require short-term momentum alignment
+    "risk_per_trade": 0.01,                # Risk 1% of capital per trade (mild)
+    "dynamic_adx": True,                   # Enable dynamic ADX threshold
     
     # Risk Management
     "stop_loss_pct": 0.08,
