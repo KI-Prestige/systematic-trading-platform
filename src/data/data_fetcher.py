@@ -84,9 +84,19 @@ class DataFetcher:
 
 
 
-            # Save to cache
-            df.to_sql('price_data', conn, if_exists='append', index=False)
-            print(f"💾 Cached {len(df)} rows for {symbol}")
+            # Safe insert with duplicate handling
+            if not df.empty:
+                df = df.drop_duplicates(subset=['date'])
+                try:
+                    df.to_sql('price_data', self.conn, if_exists='append', index=False)
+                except Exception as e:
+                    # Ignore duplicate errors
+                    if "UNIQUE constraint failed" in str(e):
+                        print(f"⚠️ Some duplicate dates ignored for {symbol}")
+                    else:
+                        print(f"Warning saving {symbol}: {e}")
+                
+                print(f"💾 Cached {len(df)} rows for {symbol}")
             
             all_data.append(df)
         

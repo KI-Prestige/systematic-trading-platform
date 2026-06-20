@@ -134,3 +134,5 @@ if __name__ == "__main__":
         print(f"{symbol}: {sig['signal'].upper()} | Price ${sig['latest_price']} | Size {sig['suggested_size']} | ADX {sig.get('adx', 'N/A')}")
         print(f"   → {sig['reason']}\n")
 
+
+

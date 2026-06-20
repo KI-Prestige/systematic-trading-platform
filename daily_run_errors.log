@@ -1,0 +1,625 @@
+
+2026-06-17 09:02:58.736552 - ERROR: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 645, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\retry.py", line 490, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\daily_trading_run.py", line 36, in daily_run
+    trader.get_account()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\live\paper_trader.py", line 24, in get_account
+    account = self.client.get_account()
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\trading\client.py", line 474, in get_account
+    response = self.get("/account")
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 195, in _one_request
+    response = self._session.request(method, url, **opts)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 660, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+2026-06-17 16:47:47.888158 - ERROR: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 645, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\retry.py", line 490, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\daily_trading_run.py", line 36, in daily_run
+    trader.get_account()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\live\paper_trader.py", line 24, in get_account
+    account = self.client.get_account()
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\trading\client.py", line 474, in get_account
+    response = self.get("/account")
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 195, in _one_request
+    response = self._session.request(method, url, **opts)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 660, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+2026-06-19 14:56:37.334903 - ERROR: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 645, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\retry.py", line 490, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\daily_trading_run.py", line 36, in daily_run
+    trader.get_account()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\live\paper_trader.py", line 24, in get_account
+    account = self.client.get_account()
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\trading\client.py", line 474, in get_account
+    response = self.get("/account")
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 195, in _one_request
+    response = self._session.request(method, url, **opts)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 660, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+2026-06-19 14:58:48.208667 - ERROR: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 645, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\retry.py", line 490, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+        sock=sock,
+    ...<14 lines>...
+        assert_fingerprint=self.assert_fingerprint,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\connection.py", line 975, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+        sock=sock,
+    ...<8 lines>...
+        tls_in_tls=tls_in_tls,
+    )
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 483, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\urllib3\util\ssl_.py", line 527, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sock=sock,
+        ^^^^^^^^^^
+    ...<5 lines>...
+        session=session
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1076, in _create
+    self.do_handshake()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Lib\ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\daily_trading_run.py", line 45, in daily_run
+    trader.get_account()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\live\paper_trader.py", line 24, in get_account
+    account = self.client.get_account()
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\trading\client.py", line 474, in get_account
+    response = self.get("/account")
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\alpaca\common\rest.py", line 195, in _one_request
+    response = self._session.request(method, url, **opts)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\requests\adapters.py", line 660, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+2026-06-20 14:40:45.351907 - ERROR: Execution failed
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\pandas\io\sql.py", line 2571, in _execute_insert
+    conn.executemany(self.insert_statement(num_rows=1), data_list)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: price_data.date
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\daily_trading_run.py", line 26, in daily_run
+    signals = sg.get_all_signals()
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\strategies\signal_generator.py", line 124, in get_all_signals
+    signals[symbol] = self.get_latest_signal(symbol)
+                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\strategies\signal_generator.py", line 26, in get_latest_signal
+    df = self.fetcher.fetch_and_cache([symbol])
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\src\data\data_fetcher.py", line 88, in fetch_and_cache
+    df.to_sql('price_data', conn, if_exists='append', index=False)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\pandas\core\generic.py", line 3052, in to_sql
+    return sql.to_sql(
+           ~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<8 lines>...
+        method=method,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\pandas\io\sql.py", line 841, in to_sql
+    return pandas_sql.to_sql(
+           ~~~~~~~~~~~~~~~~~^
+        frame,
+        ^^^^^^
+    ...<9 lines>...
+        **engine_kwargs,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\pandas\io\sql.py", line 2880, in to_sql
+    return table.insert(chunksize, method)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\pandas\io\sql.py", line 1122, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+  File "C:\Users\Ibrahim.Khaleel\OneDrive - Access-ARM Pensions\Desktop\Projects\systematic-trading-platform\venv\Lib\site-packages\pandas\io\sql.py", line 2573, in _execute_insert
+    raise DatabaseError("Execution failed") from exc
+pandas.errors.DatabaseError: Execution failed
